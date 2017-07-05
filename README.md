@@ -20,6 +20,7 @@ import (
 )
 
 func main() {
+	babel.Init(4) // Setup 4 transformers (can be any number > 0)
 	res, err := babel.Transform(strings.NewReader(`let foo = 1;
 	<div>
 		Hello JSX!
@@ -47,4 +48,15 @@ React.createElement(
 	foo,
 	"."
 );
+```
+
+## Benchmarks
+
+```
+$ go test -bench Transform -benchmem
+BenchmarkTransformString-8                    	     200	   6042202 ns/op	  925350 B/op	   15779 allocs/op
+BenchmarkTransformStringWithSingletonPool-8   	     200	   5976874 ns/op	  927350 B/op	   15809 allocs/op
+BenchmarkTransformStringWithLargePool-8       	     300	   5892891 ns/op	  926572 B/op	   15799 allocs/op
+PASS
+ok  	github.com/jvatic/goja-babel	20.346s
 ```
