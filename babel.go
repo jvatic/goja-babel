@@ -32,6 +32,7 @@ func Init(poolSize int) (err error) {
 			transformFn, e := loadBabel(vm)
 			if e != nil {
 				err = e
+				return
 			}
 			globalpool <- &babelTransformer{Runtime: vm, Transform: transformFn}
 		}
