@@ -23,6 +23,7 @@ func (t *babelTransformer) Done() {
 
 var once = &sync.Once{}
 var globalpool chan *babelTransformer
+var babelProg = goja.MustCompile("babel.js", string(_MustAsset("babel.js")), false)
 
 func Init(poolSize int) (err error) {
 	once.Do(func() {
@@ -84,11 +85,7 @@ func getTransformer() (*babelTransformer, error) {
 }
 
 func loadBabel(vm *goja.Runtime) (func(string, map[string]interface{}) (goja.Value, error), error) {
-	babelsrc, err := _Asset("babel.js")
-	if err != nil {
-		return nil, err
-	}
-	_, err = vm.RunScript("babel.js", string(babelsrc))
+	_, err := vm.RunProgram(babelProg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load babel.js: %s", err)
 	}
