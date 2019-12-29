@@ -23,10 +23,14 @@ func (t *babelTransformer) Done() {
 
 var once = &sync.Once{}
 var globalpool chan *babelTransformer
-var babelProg = goja.MustCompile("babel.js", string(_MustAsset("babel.js")), false)
+var babelProg *goja.Program
 
 func Init(poolSize int) (err error) {
 	once.Do(func() {
+		if e := compileBabel(); e != nil {
+			err = e
+			return
+		}
 		globalpool = make(chan *babelTransformer, poolSize)
 		for i := 0; i < poolSize; i++ {
 			vm := goja.New()
@@ -82,6 +86,20 @@ func getTransformer() (*babelTransformer, error) {
 		t := <-globalpool
 		return t, nil
 	}
+}
+
+func compileBabel() error {
+	babelData, err := _Asset("babel.js")
+	if err != nil {
+		return err
+	}
+
+	babelProg, err = goja.Compile("babel.js", string(babelData), true)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func loadBabel(vm *goja.Runtime) (func(string, map[string]interface{}) (goja.Value, error), error) {
