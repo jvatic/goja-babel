@@ -12,7 +12,7 @@ import (
 
 var opts = map[string]interface{}{
 	"plugins": []string{
-		"transform-es2015-block-scoping",
+		"transform-block-scoping",
 	},
 }
 
