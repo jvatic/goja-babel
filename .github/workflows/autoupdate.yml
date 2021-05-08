@@ -1,0 +1,25 @@
+name: Babel Auto-updater
+on:
+  schedule:
+    - cron: 02 14 * * *
+
+jobs:
+  babel-updater:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+      - name: Update to latest version
+        run: ./update_version.sh
+      - name: Verify
+        run: go test ./...
+      - name: Commit
+        run: |
+          git config --global user.name 'Babel Auto-updater action'
+          git config --global user.email 'jvatic@users.noreply.github.com'
+          BABEL_VERSION=$(cat babel_version.txt)
+          git commit -am "Bump babel version to $BABEL_VERSION"
+          git tag babel-$BABEL_VERSION
+          git push --tags
