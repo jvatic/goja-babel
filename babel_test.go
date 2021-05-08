@@ -12,13 +12,23 @@ import (
 
 var opts = map[string]interface{}{
 	"plugins": []string{
+		"transform-react-jsx",
 		"transform-block-scoping",
 	},
 }
 
 func _TransformWithPool(t *testing.T, n int, p int) {
-	input := `let foo = 1`
-	expectedOutput := `var foo = 1;`
+	input := `let foo = 1;
+	<div>
+		Hello JSX!
+		The value of foo is {foo}.
+	</div>`
+	expectedOutput := strings.Join([]string{
+		"var foo = 1;",
+		"",
+		"/*#__PURE__*/",
+		`React.createElement("div", null, "Hello JSX! The value of foo is ", foo, ".");`,
+	}, "\n")
 	done := make(chan struct{})
 	if p > 0 {
 		Init(p)
