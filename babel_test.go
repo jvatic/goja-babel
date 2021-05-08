@@ -17,12 +17,13 @@ var opts = map[string]interface{}{
 	},
 }
 
-func _TransformWithPool(t *testing.T, n int, p int) {
-	input := `let foo = 1;
+var input = `let foo = 1;
 	<div>
 		Hello JSX!
 		The value of foo is {foo}.
 	</div>`
+
+func _TransformWithPool(t *testing.T, n int, p int) {
 	expectedOutput := strings.Join([]string{
 		"var foo = 1;",
 		"",
@@ -58,7 +59,7 @@ func TestTransformWithPool(t *testing.T) {
 
 func BenchmarkTransformString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		TransformString(`let foo = 1`, opts)
+		TransformString(input, opts)
 	}
 }
 
@@ -66,7 +67,7 @@ func BenchmarkTransformStringWithSingletonPool(b *testing.B) {
 	Init(1)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		TransformString(`let foo = 1`, opts)
+		TransformString(input, opts)
 	}
 }
 
@@ -74,6 +75,6 @@ func BenchmarkTransformStringWithLargePool(b *testing.B) {
 	Init(4)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		TransformString(`let foo = 1`, opts)
+		TransformString(input, opts)
 	}
 }
