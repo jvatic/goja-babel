@@ -2,13 +2,16 @@ package goja
 
 import (
 	"errors"
+	"github.com/dop251/goja/unistring"
 	"io"
 	"math"
 	"regexp"
 	"strconv"
-	"unicode/utf16"
+	"strings"
 	"unicode/utf8"
 )
+
+const hexUpper = "0123456789ABCDEF"
 
 var (
 	parseFloatRegexp = regexp.MustCompile(`^([+-]?(?:Infinity|[0-9]*\.?[0-9]*(?:[eE][+-]?[0-9]+)?))`)
@@ -23,14 +26,14 @@ func (r *Runtime) builtin_isNaN(call FunctionCall) Value {
 }
 
 func (r *Runtime) builtin_parseInt(call FunctionCall) Value {
-	str := call.Argument(0).ToString().toTrimmedUTF8()
+	str := call.Argument(0).toString().toTrimmedUTF8()
 	radix := int(toInt32(call.Argument(1)))
 	v, _ := parseInt(str, radix)
 	return v
 }
 
 func (r *Runtime) builtin_parseFloat(call FunctionCall) Value {
-	m := parseFloatRegexp.FindStringSubmatch(call.Argument(0).ToString().toTrimmedUTF8())
+	m := parseFloatRegexp.FindStringSubmatch(call.Argument(0).toString().toTrimmedUTF8())
 	if len(m) == 2 {
 		if s := m[1]; s != "" && s != "+" && s != "-" {
 			switch s {
@@ -92,7 +95,7 @@ func (r *Runtime) _encode(uriString valueString, unescaped *[256]bool) valueStri
 	reader = uriString.reader(0)
 	for {
 		rn, _, err := reader.ReadRune()
-		if err != nil {
+		if err == io.EOF {
 			break
 		}
 
@@ -100,21 +103,21 @@ func (r *Runtime) _encode(uriString valueString, unescaped *[256]bool) valueStri
 			n := utf8.EncodeRune(utf8Buf, rn)
 			for _, b := range utf8Buf[:n] {
 				buf[i] = '%'
-				buf[i+1] = "0123456789ABCDEF"[b>>4]
-				buf[i+2] = "0123456789ABCDEF"[b&15]
+				buf[i+1] = hexUpper[b>>4]
+				buf[i+2] = hexUpper[b&15]
 				i += 3
 			}
 		} else if !unescaped[rn] {
 			buf[i] = '%'
-			buf[i+1] = "0123456789ABCDEF"[rn>>4]
-			buf[i+2] = "0123456789ABCDEF"[rn&15]
+			buf[i+1] = hexUpper[rn>>4]
+			buf[i+2] = hexUpper[rn&15]
 			i += 3
 		} else {
 			buf[i] = byte(rn)
 			i++
 		}
 	}
-	return asciiString(string(buf))
+	return asciiString(buf)
 }
 
 func (r *Runtime) _decode(sv valueString, reservedSet *[256]bool) valueString {
@@ -186,7 +189,7 @@ func (r *Runtime) _decode(sv valueString, reservedSet *[256]bool) valueString {
 		us = append(us, rn)
 		t = t[size:]
 	}
-	return unicodeString(utf16.Encode(us))
+	return unicodeStringFromRunes(us)
 }
 
 func ishex(c byte) bool {
@@ -214,23 +217,113 @@ func unhex(c byte) byte {
 }
 
 func (r *Runtime) builtin_decodeURI(call FunctionCall) Value {
-	uriString := call.Argument(0).ToString()
+	uriString := call.Argument(0).toString()
 	return r._decode(uriString, &uriReservedHash)
 }
 
 func (r *Runtime) builtin_decodeURIComponent(call FunctionCall) Value {
-	uriString := call.Argument(0).ToString()
+	uriString := call.Argument(0).toString()
 	return r._decode(uriString, &emptyEscapeSet)
 }
 
 func (r *Runtime) builtin_encodeURI(call FunctionCall) Value {
-	uriString := call.Argument(0).ToString()
+	uriString := call.Argument(0).toString()
 	return r._encode(uriString, &uriReservedUnescapedHash)
 }
 
 func (r *Runtime) builtin_encodeURIComponent(call FunctionCall) Value {
-	uriString := call.Argument(0).ToString()
+	uriString := call.Argument(0).toString()
 	return r._encode(uriString, &uriUnescaped)
+}
+
+func (r *Runtime) builtin_escape(call FunctionCall) Value {
+	s := call.Argument(0).toString()
+	var sb strings.Builder
+	l := s.length()
+	for i := 0; i < l; i++ {
+		r := uint16(s.charAt(i))
+		if r >= 'A' && r <= 'Z' || r >= 'a' && r <= 'z' || r >= '0' && r <= '9' ||
+			r == '@' || r == '*' || r == '_' || r == '+' || r == '-' || r == '.' || r == '/' {
+			sb.WriteByte(byte(r))
+		} else if r <= 0xff {
+			sb.WriteByte('%')
+			sb.WriteByte(hexUpper[r>>4])
+			sb.WriteByte(hexUpper[r&0xf])
+		} else {
+			sb.WriteString("%u")
+			sb.WriteByte(hexUpper[r>>12])
+			sb.WriteByte(hexUpper[(r>>8)&0xf])
+			sb.WriteByte(hexUpper[(r>>4)&0xf])
+			sb.WriteByte(hexUpper[r&0xf])
+		}
+	}
+	return asciiString(sb.String())
+}
+
+func (r *Runtime) builtin_unescape(call FunctionCall) Value {
+	s := call.Argument(0).toString()
+	l := s.length()
+	_, unicode := s.(unicodeString)
+	var asciiBuf []byte
+	var unicodeBuf []uint16
+	if unicode {
+		unicodeBuf = make([]uint16, 1, l+1)
+		unicodeBuf[0] = unistring.BOM
+	} else {
+		asciiBuf = make([]byte, 0, l)
+	}
+	for i := 0; i < l; {
+		r := s.charAt(i)
+		if r == '%' {
+			if i <= l-6 && s.charAt(i+1) == 'u' {
+				c0 := s.charAt(i + 2)
+				c1 := s.charAt(i + 3)
+				c2 := s.charAt(i + 4)
+				c3 := s.charAt(i + 5)
+				if c0 <= 0xff && ishex(byte(c0)) &&
+					c1 <= 0xff && ishex(byte(c1)) &&
+					c2 <= 0xff && ishex(byte(c2)) &&
+					c3 <= 0xff && ishex(byte(c3)) {
+					r = rune(unhex(byte(c0)))<<12 |
+						rune(unhex(byte(c1)))<<8 |
+						rune(unhex(byte(c2)))<<4 |
+						rune(unhex(byte(c3)))
+					i += 5
+					goto out
+				}
+			}
+			if i <= l-3 {
+				c0 := s.charAt(i + 1)
+				c1 := s.charAt(i + 2)
+				if c0 <= 0xff && ishex(byte(c0)) &&
+					c1 <= 0xff && ishex(byte(c1)) {
+					r = rune(unhex(byte(c0))<<4 | unhex(byte(c1)))
+					i += 2
+				}
+			}
+		}
+	out:
+		if r >= utf8.RuneSelf && !unicode {
+			unicodeBuf = make([]uint16, 1, l+1)
+			unicodeBuf[0] = unistring.BOM
+			for _, b := range asciiBuf {
+				unicodeBuf = append(unicodeBuf, uint16(b))
+			}
+			asciiBuf = nil
+			unicode = true
+		}
+		if unicode {
+			unicodeBuf = append(unicodeBuf, uint16(r))
+		} else {
+			asciiBuf = append(asciiBuf, byte(r))
+		}
+		i++
+	}
+	if unicode {
+		return unicodeString(unicodeBuf)
+	}
+
+	return asciiString(asciiBuf)
 }
 
 func (r *Runtime) initGlobalObject() {
@@ -247,10 +340,10 @@ func (r *Runtime) initGlobalObject() {
 	o._putProp("decodeURIComponent", r.newNativeFunc(r.builtin_decodeURIComponent, nil, "decodeURIComponent", nil, 1), true, false, true)
 	o._putProp("encodeURI", r.newNativeFunc(r.builtin_encodeURI, nil, "encodeURI", nil, 1), true, false, true)
 	o._putProp("encodeURIComponent", r.newNativeFunc(r.builtin_encodeURIComponent, nil, "encodeURIComponent", nil, 1), true, false, true)
+	o._putProp("escape", r.newNativeFunc(r.builtin_escape, nil, "escape", nil, 1), true, false, true)
+	o._putProp("unescape", r.newNativeFunc(r.builtin_unescape, nil, "unescape", nil, 1), true, false, true)
 
-	o._putProp("toString", r.newNativeFunc(func(FunctionCall) Value {
-		return stringGlobalObject
-	}, nil, "toString", nil, 0), false, false, false)
+	o._putSym(SymToStringTag, valueProp(asciiString(classGlobal), false, false, true))
 
 	// TODO: Annex B
 
