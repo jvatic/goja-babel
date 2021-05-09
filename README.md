@@ -1,6 +1,8 @@
 goja-babel
 ==========
 
+[![CI](https://github.com/jvatic/goja-babel/actions/workflows/ci.yml/badge.svg)](https://github.com/jvatic/goja-babel/actions/workflows/ci.yml)
+
 Uses github.com/dop251/goja to run babel.js within Go.
 
 **WARNING:** This is largely untested and the exposed API may change at any time.
