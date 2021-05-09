@@ -1,7 +1,7 @@
 name: Babel Auto-updater
 on:
   schedule:
-    - cron: 00 18 * * *
+    - cron: 10 11 * * *
 
 jobs:
   babel-updater:
@@ -21,5 +21,6 @@ jobs:
           git config --global user.email 'jvatic@users.noreply.github.com'
           BABEL_VERSION=$(cat babel_version.txt)
           git commit -am "Bump babel version to $BABEL_VERSION"
+          git push
           git tag babel-$BABEL_VERSION
           git push --tags
