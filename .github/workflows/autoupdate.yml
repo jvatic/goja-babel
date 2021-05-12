@@ -12,10 +12,14 @@ jobs:
         with:
           go-version: '^1.16'
       - name: Update to latest version
+        id: update
+        continue-on-error: true
         run: ./update_version.sh
       - name: Verify
+        if: steps.update.outcome == 'success'
         run: go test ./...
       - name: Commit
+        if: steps.update.outcome == 'success'
         run: |
           git config --global user.name 'Babel Auto-updater action'
           git config --global user.email 'jvatic@users.noreply.github.com'
