@@ -5,8 +5,6 @@ goja-babel
 
 Uses github.com/dop251/goja to run babel.js within Go.
 
-**WARNING:** This is largely untested and the exposed API may change at any time.
-
 ## Usage
 
 ```go
