@@ -35,6 +35,15 @@ func Init(poolSize int) (err error) {
 		globalpool = make(chan *babelTransformer, poolSize)
 		for i := 0; i < poolSize; i++ {
 			vm := goja.New()
+
+			// define console.{log|error|warn} so loading babel doesn't error
+			logFunc := func(goja.FunctionCall) goja.Value { return nil }
+			vm.Set("console", map[string]func(goja.FunctionCall) goja.Value{
+				"log":   logFunc,
+				"error": logFunc,
+				"warn":  logFunc,
+			})
+
 			transformFn, e := loadBabel(vm)
 			if e != nil {
 				err = e
