@@ -1,0 +1,26 @@
+name: Goja Auto-updater
+on:
+  schedule:
+    - cron: 10 12 * * *
+
+jobs:
+  goja-updater:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16'
+      - name: Update to latest version
+        id: update
+        run: ./update_goja.sh
+      - name: Verify
+        if: env.UPDATE == env.LATEST_VERSION
+        run: go test ./...
+      - name: Commit
+        if: env.UPDATE == env.LATEST_VERSION
+        run: |
+          git config --global user.name 'Goja Auto-updater action'
+          git config --global user.email 'jvatic@users.noreply.github.com'
+          git commit -am "Bump goja version to $LATEST_VERSION"
+          git push
