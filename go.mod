@@ -3,7 +3,7 @@ module github.com/jvatic/goja-babel
 go 1.16
 
 require (
-	github.com/dop251/goja v0.0.0-20220102113305-2298ace6d09d
+	github.com/dop251/goja v0.0.0-20220104154337-b93494d0c5d9
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
