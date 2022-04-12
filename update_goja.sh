@@ -24,5 +24,6 @@ then
 else
     echo "Updating to latest version: $CURRENT_VERSION -> $LATEST_VERSION"
     go get -u github.com/dop251/goja@$LATEST_VERSION
+    go mod tidy
     echo "UPDATE=$LATEST_VERSION" >> $GITHUB_ENV
 fi
