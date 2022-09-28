@@ -30,22 +30,38 @@ func _TransformWithPool(t *testing.T, n int, p int) {
 		"/*#__PURE__*/",
 		`React.createElement("div", null, "Hello JSX! The value of foo is ", foo, ".");`,
 	}, "\n")
-	done := make(chan struct{})
 	if p > 0 {
 		Init(p)
 	}
+	type result struct {
+		Index  int
+		Error  error
+		Output string
+	}
+	outputCh := make(chan result)
 	for i := 0; i < n; i++ { // make sure pool works by calling Transform multiple times
 		go func(i int) {
-			defer func() { done <- struct{}{} }()
 			output, err := Transform(strings.NewReader(input), opts)
-			assert.Nil(t, err, fmt.Sprintf("Transform(%d) failed", i))
+			if err != nil {
+				outputCh <- result{
+					Index: i,
+					Error: err,
+				}
+				return
+			}
 			var outputBuf bytes.Buffer
 			io.Copy(&outputBuf, output)
-			assert.Equal(t, expectedOutput, outputBuf.String(), fmt.Sprintf("Transform(%d) failed", i))
+			outputCh <- result{
+				Index:  i,
+				Output: outputBuf.String(),
+			}
 		}(i)
 	}
-	for i := 0; i < n; i++ {
-		<-done
+
+	for i := 0; i < n; i++ { // check outputs
+		output := <-outputCh
+		assert.Nil(t, output.Error, fmt.Sprintf("Transform(%d) failed", output.Index))
+		assert.Equal(t, expectedOutput, output.Output, fmt.Sprintf("Transform(%d) failed", output.Index))
 	}
 }
 
