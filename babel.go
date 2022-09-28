@@ -27,6 +27,11 @@ var globalpool chan *babelTransformer
 var babelProg *goja.Program
 
 func Init(poolSize int) (err error) {
+	defer (func() {
+		if err != nil {
+			once = &sync.Once{}
+		}
+	})()
 	once.Do(func() {
 		if e := compileBabel(); e != nil {
 			err = e
