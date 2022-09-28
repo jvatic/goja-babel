@@ -15,6 +15,7 @@ then
 else
     echo "Updating to latest version: $CURRENT_VERSION -> $LATEST_VERSION"
     curl -o babel.js https://unpkg.com/@babel/standalone@$LATEST_VERSION/babel.min.js
+    curl -o babel.min.js.map https://unpkg.com/@babel/standalone@$LATEST_VERSION/babel.min.js.map
     echo $LATEST_VERSION > babel_version.txt
     echo "UPDATE=$LATEST_VERSION" >> $GITHUB_ENV
 fi
