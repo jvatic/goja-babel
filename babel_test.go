@@ -26,9 +26,7 @@ var input = `let foo = 1;
 func _TransformWithPool(t *testing.T, n int, p int) {
 	expectedOutput := strings.Join([]string{
 		"var foo = 1;",
-		"",
-		"/*#__PURE__*/",
-		`React.createElement("div", null, "Hello JSX! The value of foo is ", foo, ".");`,
+		`/*#__PURE__*/React.createElement("div", null, "Hello JSX! The value of foo is ", foo, ".");`,
 	}, "\n")
 	if p > 0 {
 		Init(p)
