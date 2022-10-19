@@ -14,7 +14,7 @@ then
     echo "UPDATE=NOOP" >> $GITHUB_ENV
 else
     echo "Updating to latest version: $CURRENT_VERSION -> $LATEST_VERSION"
-    curl -o babel.js https://unpkg.com/@babel/standalone@$LATEST_VERSION/babel.min.js
+    curl https://unpkg.com/@babel/standalone@$LATEST_VERSION/babel.min.js | sed 's/# sourceMappingURL=//' > babel.js
     echo $LATEST_VERSION > babel_version.txt
     echo "UPDATE=$LATEST_VERSION" >> $GITHUB_ENV
 fi
