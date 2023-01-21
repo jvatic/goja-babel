@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/dlclark/regexp2 v1.8.0 // indirect
-	github.com/dop251/goja v0.0.0-20230119130012-17fd568758fe
+	github.com/dop251/goja v0.0.0-20230121114657-2e4cbb985272
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 	golang.org/x/text v0.6.0 // indirect
 )
