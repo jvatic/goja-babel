@@ -4,8 +4,8 @@ go 1.16
 
 require (
 	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/dop251/goja v0.0.0-20230626124041-ba8a63e79201
-	github.com/google/pprof v0.0.0-20230602150820-91b7bce49751 // indirect
+	github.com/dop251/goja v0.0.0-20230706221022-1d34ed12aec1
+	github.com/google/pprof v0.0.0-20230705174524-200ffdc848b8 // indirect
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
-	golang.org/x/text v0.10.0 // indirect
+	golang.org/x/text v0.11.0 // indirect
 )
