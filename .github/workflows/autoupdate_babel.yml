@@ -23,7 +23,7 @@ jobs:
           git config --global user.name 'Babel Auto-updater action'
           git config --global user.email 'jvatic@users.noreply.github.com'
           BABEL_VERSION=$(cat babel_version.txt)
-          git commit -am "Bump babel version to $BABEL_VERSION"
+          git commit -am "chore(babel): bump version to $BABEL_VERSION"
           git push
           git tag babel-$BABEL_VERSION
           git push --tags
