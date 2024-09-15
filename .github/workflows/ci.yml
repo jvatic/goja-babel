@@ -1,5 +1,12 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, edited]
+  workflow_run:
+    workflows: [Goja Auto-updater]
+    types: [completed]
 
 jobs:
   test-runner:
