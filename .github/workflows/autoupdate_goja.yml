@@ -22,5 +22,5 @@ jobs:
         run: |
           git config --global user.name 'Goja Auto-updater action'
           git config --global user.email 'jvatic@users.noreply.github.com'
-          git commit -am "Bump goja version to $LATEST_VERSION"
+          git commit -am "core(goja): bump version to $LATEST_VERSION"
           git push
