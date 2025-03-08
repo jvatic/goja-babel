@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.6
 
 require (
-	github.com/dop251/goja v0.0.0-20250305215736-311323fba474
+	github.com/dop251/goja v0.0.0-20250307175808-203961f822d6
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 )
 
