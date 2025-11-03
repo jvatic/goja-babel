@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.7
 
 require (
-	github.com/dop251/goja v0.0.0-20251008123653-cf18d89f3cf6
+	github.com/dop251/goja v0.0.0-20251103110321-7516b814d492
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 )
 
