@@ -1,9 +1,9 @@
 module github.com/jvatic/goja-babel
 
-go 1.24.9
+go 1.25.0
 
 require (
-	github.com/dop251/goja v0.0.0-20260305124333-6a7976c22267
+	github.com/dop251/goja v0.0.0-20260311135729-065cd970411c
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 )
 
@@ -14,5 +14,5 @@ require (
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
-	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/text v0.35.0 // indirect
 )
