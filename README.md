@@ -41,10 +41,11 @@ func main() {
 
 ```js
 $ go run main.go
+import { jsxs as _jsxs } from "react/jsx-runtime";
 var foo = 1;
-
-/*#__PURE__*/
-React.createElement("div", null, "Hello JSX! The value of foo is ", foo, ".");
+/*#__PURE__*/_jsxs("div", {
+  children: ["Hello JSX! The value of foo is ", foo, "."]
+});
 ```
 
 ## Benchmarks
