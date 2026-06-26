@@ -10,7 +10,7 @@ import (
 	"github.com/stvp/assert"
 )
 
-var opts = map[string]interface{}{
+var opts = map[string]any{
 	"plugins": []string{
 		"transform-react-jsx",
 		"transform-block-scoping",
@@ -37,7 +37,7 @@ func _TransformWithPool(t *testing.T, n int, p int) {
 		Output string
 	}
 	outputCh := make(chan result)
-	for i := 0; i < n; i++ { // make sure pool works by calling Transform multiple times
+	for i := range n { // make sure pool works by calling Transform multiple times
 		go func(i int) {
 			output, err := Transform(strings.NewReader(input), opts)
 			if err != nil {
@@ -56,7 +56,7 @@ func _TransformWithPool(t *testing.T, n int, p int) {
 		}(i)
 	}
 
-	for i := 0; i < n; i++ { // check outputs
+	for range n { // check outputs
 		output := <-outputCh
 		assert.Nil(t, output.Error, fmt.Sprintf("Transform(%d) failed", output.Index))
 		assert.Equal(t, expectedOutput, output.Output, fmt.Sprintf("Transform(%d) failed", output.Index))
@@ -72,23 +72,23 @@ func TestTransformWithPool(t *testing.T) {
 }
 
 func BenchmarkTransformString(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		TransformString(input, opts)
 	}
 }
 
 func BenchmarkTransformStringWithSingletonPool(b *testing.B) {
 	Init(1)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for b.Loop() {
 		TransformString(input, opts)
 	}
 }
 
 func BenchmarkTransformStringWithLargePool(b *testing.B) {
 	Init(4)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+
+	for b.Loop() {
 		TransformString(input, opts)
 	}
 }

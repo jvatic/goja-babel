@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"strings"
 	"sync"
 
@@ -15,7 +14,7 @@ const DefaultPoolSize = 1
 
 type babelTransformer struct {
 	Runtime   *goja.Runtime
-	Transform func(string, map[string]interface{}) (goja.Value, error)
+	Transform func(string, map[string]any) (goja.Value, error)
 }
 
 func (t *babelTransformer) Done() {
@@ -38,7 +37,7 @@ func Init(poolSize int) (err error) {
 			return
 		}
 		globalpool = make(chan *babelTransformer, poolSize)
-		for i := 0; i < poolSize; i++ {
+		for range poolSize {
 			vm := goja.New()
 
 			// define console.{log|error|warn} so loading babel doesn't error
@@ -61,8 +60,8 @@ func Init(poolSize int) (err error) {
 	return err
 }
 
-func Transform(src io.Reader, opts map[string]interface{}) (io.Reader, error) {
-	data, err := ioutil.ReadAll(src)
+func Transform(src io.Reader, opts map[string]any) (io.Reader, error) {
+	data, err := io.ReadAll(src)
 	if err != nil {
 		return nil, err
 	}
@@ -73,9 +72,9 @@ func Transform(src io.Reader, opts map[string]interface{}) (io.Reader, error) {
 	return strings.NewReader(res), nil
 }
 
-func TransformString(src string, opts map[string]interface{}) (string, error) {
+func TransformString(src string, opts map[string]any) (string, error) {
 	if opts == nil {
-		opts = map[string]interface{}{}
+		opts = map[string]any{}
 	}
 	t, err := getTransformer()
 	if err != nil {
@@ -116,7 +115,7 @@ func compileBabel() error {
 	return nil
 }
 
-func loadBabel(vm *goja.Runtime) (func(string, map[string]interface{}) (goja.Value, error), error) {
+func loadBabel(vm *goja.Runtime) (func(string, map[string]any) (goja.Value, error), error) {
 	_, err := vm.RunProgram(babelProg)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load babel.js: %s", err)
@@ -126,7 +125,7 @@ func loadBabel(vm *goja.Runtime) (func(string, map[string]interface{}) (goja.Val
 	if err := vm.ExportTo(babel.ToObject(vm).Get("transform"), &transform); err != nil {
 		return nil, fmt.Errorf("unable to export transform fn: %s", err)
 	}
-	return func(src string, opts map[string]interface{}) (goja.Value, error) {
+	return func(src string, opts map[string]any) (goja.Value, error) {
 		return transform(babel, vm.ToValue(src), vm.ToValue(opts))
 	}, nil
 }
