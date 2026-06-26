@@ -76,6 +76,7 @@ func TransformString(src string, opts map[string]any) (string, error) {
 	if opts == nil {
 		opts = map[string]any{}
 	}
+
 	t, err := getTransformer()
 	if err != nil {
 		return "", err
