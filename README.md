@@ -3,7 +3,7 @@ goja-babel
 
 [![CI](https://github.com/jvatic/goja-babel/actions/workflows/ci.yml/badge.svg)](https://github.com/jvatic/goja-babel/actions/workflows/ci.yml)
 
-Uses github.com/dop251/goja to run babel.js within Go.
+Uses [goja](https://github.com/dop251/goja) to run [babel.js](https://babeljs.io/) within Go.
 
 ## Usage
 
@@ -53,12 +53,12 @@ var foo = 1;
 ```
 go test -bench Transform -benchmem
 goos: darwin
-goarch: amd64
+goarch: arm64
 pkg: github.com/jvatic/goja-babel
-cpu: Intel(R) Core(TM) i7-3615QM CPU @ 2.30GHz
-BenchmarkTransformString-8                    	      81	  15642708 ns/op	 3069085 B/op	   37243 allocs/op
-BenchmarkTransformStringWithSingletonPool-8   	      67	  15820676 ns/op	 3070920 B/op	   37244 allocs/op
-BenchmarkTransformStringWithLargePool-8       	      78	  15497562 ns/op	 3070015 B/op	   37243 allocs/op
+cpu: Apple M3 Pro
+BenchmarkTransformString-11                     	     402	   2984801 ns/op	 2310079 B/op	   29834 allocs/op
+BenchmarkTransformStringWithSingletonPool-11    	     411	   2911610 ns/op	 2310858 B/op	   29835 allocs/op
+BenchmarkTransformStringWithLargePool-11        	     411	   2982102 ns/op	 2310419 B/op	   29835 allocs/op
 PASS
-ok  	github.com/jvatic/goja-babel	4.993s
+ok  	github.com/jvatic/goja-babel	3.878s
 ```
