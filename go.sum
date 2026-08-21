@@ -1,10 +1,10 @@
 github.com/Masterminds/semver/v3 v3.5.0 h1:kQceYJfbupGfZOKZQg0kou0DgAKhzDg2NZPAwZ/2OOE=
 github.com/Masterminds/semver/v3 v3.5.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
-github.com/dlclark/regexp2/v2 v2.5.2 h1:HAsucWRhsqcDzl6Ua9aR8JwYOTzrZyPrF0/FNxJVAI0=
-github.com/dlclark/regexp2/v2 v2.5.2/go.mod h1:avUrQvPaLz2DrFNHJF0taWAFFX2C1GMSSoeiqFjcBmU=
-github.com/dop251/goja v0.0.0-20260806115107-493f22071ef6 h1:Oh2rRG1un7tLlC3/NJDzKppZ4CeZGkVFJCUOTRwLpfw=
-github.com/dop251/goja v0.0.0-20260806115107-493f22071ef6/go.mod h1:LiIEzozrcvNXorsG/3+ypGqdTUAqZryhzSsqi0oU/Qg=
+github.com/dlclark/regexp2/v2 v2.7.1 h1:yqDtwI1ptXXvEUNpYTk2lad4jLtAcKqkzepn4savSk4=
+github.com/dlclark/regexp2/v2 v2.7.1/go.mod h1:avUrQvPaLz2DrFNHJF0taWAFFX2C1GMSSoeiqFjcBmU=
+github.com/dop251/goja v0.0.0-20260820211235-95a30dcd3fa5 h1:vtyXXUeZQM4iNxud6zzTtdxT95nBJrelu77+DS0Vyi0=
+github.com/dop251/goja v0.0.0-20260820211235-95a30dcd3fa5/go.mod h1:LiIEzozrcvNXorsG/3+ypGqdTUAqZryhzSsqi0oU/Qg=
 github.com/go-sourcemap/sourcemap v2.1.4+incompatible h1:a+iTbH5auLKxaNwQFg0B+TCYl6lbukKPc7b5x0n1s6Q=
 github.com/go-sourcemap/sourcemap v2.1.4+incompatible/go.mod h1:F8jJfvm2KbVjc5NqelyYJmf/v5J0dwNLS2mL4sNA1Jg=
 github.com/goccy/go-yaml v1.19.2 h1:PmFC1S6h8ljIz6gMRBopkjP1TVT7xuwrButHID66PoM=
@@ -22,7 +22,7 @@ github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBO
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b h1:GlTM/aMVIwU3luIuSN2SIVRuTqGPt1P97YxAi514ulw=
 github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b/go.mod h1:CC7OXV9IjEZRA+znA6/Kz5vbSwh69QioernOHeDCatU=
-golang.org/x/text v0.40.0 h1:Ub2Z6/xjgF1WrYQz2nuITOEegKFtiIy+rieRJ5lHZKs=
-golang.org/x/text v0.40.0/go.mod h1:hpnzDAfGV753zIKo+wk3u1bVKCGPbrnF7+7LBF/UHVY=
+golang.org/x/text v0.41.0 h1:vz/seA0lnX87Othu2f/0L24RcgrXD9/YFTSuGjj3rH8=
+golang.org/x/text v0.41.0/go.mod h1:jvf1O8ajNzZqhSrQBPbutR/EB83Cc0CFrezNQIwbb5M=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
