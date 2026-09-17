@@ -3,7 +3,7 @@ module github.com/jvatic/goja-babel
 go 1.26.0
 
 require (
-	github.com/dop251/goja v0.0.0-20260915173639-b3fa02110dbd
+	github.com/dop251/goja v0.0.0-20260917113740-793a2a65c13b
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 )
 
