@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -euox pipefail
 
 LATEST_VERSION=$(curl -i https://unpkg.com/@babel/standalone | grep -i Location | grep -Eo '[0-9][.0-9]+[0-9]')
 CURRENT_VERSION=$(cat babel_version.txt)
