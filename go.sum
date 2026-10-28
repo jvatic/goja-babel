@@ -3,8 +3,8 @@ github.com/Masterminds/semver/v3 v3.5.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lpr
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/dlclark/regexp2/v2 v2.11.0 h1:z5uRPHav+eTVpoffDSuUP2KPS4f1ONZaPDK73S8HA0w=
 github.com/dlclark/regexp2/v2 v2.11.0/go.mod h1:avUrQvPaLz2DrFNHJF0taWAFFX2C1GMSSoeiqFjcBmU=
-github.com/dop251/goja v0.0.0-20261027145915-d535508610d2 h1:9j8UOwcHkdNzy/k3SFukrUrBTYPPqf/Burga2xqo3fI=
-github.com/dop251/goja v0.0.0-20261027145915-d535508610d2/go.mod h1:L1yoLBco9M3b2Gdh1UZHg+BIePeAdV1bwknaLLxAgoc=
+github.com/dop251/goja v0.0.0-20261027234916-5f913d1693d9 h1:K1R7adPxJGLfojyUBe6TuuqcvS6YqQAdg2HujQ9Il+Y=
+github.com/dop251/goja v0.0.0-20261027234916-5f913d1693d9/go.mod h1:L1yoLBco9M3b2Gdh1UZHg+BIePeAdV1bwknaLLxAgoc=
 github.com/go-sourcemap/sourcemap v2.1.4+incompatible h1:a+iTbH5auLKxaNwQFg0B+TCYl6lbukKPc7b5x0n1s6Q=
 github.com/go-sourcemap/sourcemap v2.1.4+incompatible/go.mod h1:F8jJfvm2KbVjc5NqelyYJmf/v5J0dwNLS2mL4sNA1Jg=
 github.com/goccy/go-yaml v1.19.2 h1:PmFC1S6h8ljIz6gMRBopkjP1TVT7xuwrButHID66PoM=
