@@ -3,12 +3,12 @@ module github.com/jvatic/goja-babel
 go 1.26.0
 
 require (
-	github.com/dop251/goja v0.0.0-20261118204651-8dfece3d1e1d
+	github.com/dop251/goja v0.0.0-20261121162556-79d6ad37b976
 	github.com/stvp/assert v0.0.0-20170616060220-4bc16443988b
 )
 
 require (
-	github.com/dlclark/regexp2/v2 v2.13.1 // indirect
+	github.com/dlclark/regexp2/v2 v2.13.2 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/google/pprof v0.0.0-20261118010117-084b33a85f63 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
